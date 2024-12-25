@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Movie from "./components/Movie";
+import Movies from "./components/Movies";
 
 const App = () => {
   const [query, setQuery] = useState("");
+  console.log(query)
   return (
     <div>
       <Navbar setQuery={setQuery} />
-      <Movie query={query} />
+      <Movies query={query} />
     </div>
   );
 };
