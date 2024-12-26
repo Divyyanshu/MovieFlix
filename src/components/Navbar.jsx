@@ -7,7 +7,7 @@ const Navbar = ({setQuery , results}) => {
   };
   console.log(results)
   return (
-    <div>
+    <div className="sticky top-0 z-10">
       <header className="m-2 h-16 p-5 flex items-center justify-between rounded-md bg-[#F2AA4C] drop-shadow-lg">
         <h1 className="font-mono text-xl font-semibold bg-white p-1 text-[#101820]">MoviesFlex🍿</h1>
         <div>
