@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import Card from "../ui/Card";
 import { CircularProgress } from "@mui/material";
 import { debounce } from "lodash";
+import { FaRegSadCry } from "react-icons/fa";
 
-const Movies = ({ query }) => {
+const Movies = ({ query, setResults }) => {
   console.log(query);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,8 @@ const Movies = ({ query }) => {
           `http://www.omdbapi.com/?apikey=a17e11af&s=${query}`
         );
         setMovies(data.data.Search);
+        //showing result total movies in navbar
+        setResults(data.data.totalResults);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -31,14 +35,33 @@ const Movies = ({ query }) => {
 
   return (
     <div>
-      {loading ? <div className="max-h-[80vh] flex justify-center items-center"><CircularProgress sx={{ color: "white" }} /></div> : <p>{JSON.stringify(movies)}</p>}
+      {loading ? (
+        <div className="h-[100vh] flex justify-center items-center">
+          <CircularProgress sx={{ color: "white" }} />
+        </div>
+      ) : (
+        <div>
+          {movies?.length > 0 ? (
+            <div className="grid grid-cols-3">
+              {movies.map((movie) => (
+                <Card movie={movie} />
+              ))}
+            </div>
+          ) : (
+            <p className="h-[100vh] flex justify-center items-center font-semibold font-mono text-[#F2AA4C] text-lg">
+              No Movies Found Search in the serch bar !
+              <span className="px-2">
+              <FaRegSadCry />
+              </span>
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
 export default Movies;
-
-
 
 // import React, { useCallback, useEffect, useState } from "react";
 // import axios from "axios";
@@ -99,4 +122,3 @@ export default Movies;
 // };
 
 // export default Movie;
-
