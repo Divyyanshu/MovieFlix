@@ -2,25 +2,34 @@ import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../ui/Card";
 import { CircularProgress } from "@mui/material";
-import { debounce } from "lodash";
+import { debounce, values } from "lodash";
 import { FaRegSadCry } from "react-icons/fa";
+import { Pagination } from "@mui/material";
 
 const Movies = ({ query, setResults }) => {
   console.log(query);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
+  // pagination
+  const [totalPages, setTotalPages] = useState(0);
+  // for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+
   console.log(movies);
 
   const fetchData = useCallback(
-    debounce(async (query) => {
+    debounce(async (query ,currentPage) => {
+      console.log(currentPage)
       setLoading(true);
       try {
         const data = await axios.get(
-          `http://www.omdbapi.com/?apikey=a17e11af&s=${query}`
+          `http://www.omdbapi.com/?apikey=a17e11af&s=${query}&page=${currentPage}`
         );
         setMovies(data.data.Search);
         //showing result total movies in navbar
         setResults(data.data.totalResults);
+        // for pagination satate math.ceil for divison of 10
+        setTotalPages(Math.ceil(data.data.totalResults / 10));
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -30,8 +39,8 @@ const Movies = ({ query, setResults }) => {
   );
 
   useEffect(() => {
-    fetchData(query);
-  }, [query]);
+    fetchData(query ,currentPage);
+  }, [query,currentPage]);
 
   return (
     <div>
@@ -51,12 +60,14 @@ const Movies = ({ query, setResults }) => {
             <p className="h-[100vh] flex justify-center items-center font-semibold font-mono text-[#F2AA4C] text-lg">
               No Movies Found Search in the serch bar !
               <span className="px-2">
-              <FaRegSadCry />
+                <FaRegSadCry />
               </span>
             </p>
           )}
         </div>
       )}
+      <Pagination count={totalPages} page={currentPage} onChange={(e,value)=> setCurrentPage(value)}
+      variant="outlined" shape="rounded" className="fixed bottom-0" />
     </div>
   );
 };
