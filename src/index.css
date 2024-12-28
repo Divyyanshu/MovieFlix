@@ -2,7 +2,7 @@
 @layer base {
   body {
     /* @apply bg-[#101820]; */
-    @apply bg-[#808285];
+    @apply bg-black;
   }
 }
 

@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../ui/Card";
 import { CircularProgress } from "@mui/material";
-import { debounce, values } from "lodash";
+import { debounce } from "lodash";
 import { FaRegSadCry } from "react-icons/fa";
 import { Pagination } from "@mui/material";
+import hero_image from "../assets/images/movie-hero.jpg";
 
 const Movies = ({ query, setResults }) => {
   console.log(query);
@@ -18,8 +19,8 @@ const Movies = ({ query, setResults }) => {
   console.log(movies);
 
   const fetchData = useCallback(
-    debounce(async (query ,currentPage) => {
-      console.log(currentPage)
+    debounce(async (query, currentPage) => {
+      console.log(currentPage);
       setLoading(true);
       try {
         const data = await axios.get(
@@ -39,8 +40,8 @@ const Movies = ({ query, setResults }) => {
   );
 
   useEffect(() => {
-    fetchData(query ,currentPage);
-  }, [query,currentPage]);
+    fetchData(query, currentPage);
+  }, [query, currentPage]);
 
   return (
     <div>
@@ -57,17 +58,22 @@ const Movies = ({ query, setResults }) => {
               ))}
             </div>
           ) : (
-            <p className="h-[100vh] flex justify-center items-center font-semibold font-mono text-[#F2AA4C] text-lg">
-              No Movies Found Search in the serch bar !
-              <span className="px-2">
-                <FaRegSadCry />
-              </span>
-            </p>
+            <img src={hero_image} alt="" className="relative object-contain" />
           )}
         </div>
       )}
-      <Pagination count={totalPages} page={currentPage} onChange={(e,value)=> setCurrentPage(value)}
-      variant="outlined" shape="rounded" className="fixed bottom-0" />
+      <div className="flex justify-center pb-10 items-center -z-20">
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={(e, value) => setCurrentPage(value)}
+          variant="outlined"
+          shape="rounded"
+          color="primary"
+          size="large"
+          className=" fixed bottom-3 rounded-lg bg-white"
+        />
+      </div>
     </div>
   );
 };
