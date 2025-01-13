@@ -23,7 +23,7 @@ const Movies = ({ query, setResults }) => {
       setLoading(true);
       try {
         const data = await axios.get(
-          `http://www.omdbapi.com/?apikey=a17e11af&s=${query}&page=${currentPage}`
+          `https://www.omdbapi.com/?apikey=a17e11af&s=${query}&page=${currentPage}`
         );
         setMovies(data.data.Search);
         //showing result total movies in navbar
